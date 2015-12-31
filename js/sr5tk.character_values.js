@@ -22,7 +22,7 @@ var character = function () {
 	// --- public functions	
 	return {
 		add_values: function($group, $list_of_features) {
-			console.log(define_features($group, $list_of_features));
+			define_features($group, $list_of_features);
 		}
 	}
 	

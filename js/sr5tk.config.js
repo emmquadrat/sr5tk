@@ -1,9 +1,17 @@
 // ####################################################################
 // ### sr5tk.config
 
+var $config = {};
 // --------------------------------------------------------------------
-// --- Humans
-  var $defaults_human = { 
+// --------------------------------------------------------------------
+// R A C E   V A L U E S
+/* Default racial attribute values
+   Each Race has a min and a max attributes setting
+   supported races are Humans, Elfes, Dwarfs, Orks and Trolls
+*/
+
+  // Humans
+  $config['$defaults_human'] = { 
           min: {
             kon:1,
             agi:1,
@@ -28,8 +36,8 @@
           }
         };
 
-// --- Elves
-  var $defaults_elf = { 
+  // Elves
+  $config['$defaults_elf'] = { 
           min: {
             kon:1,
             agi:2,
@@ -54,8 +62,8 @@
           }
         };
 
-// --- Dwarfs
-  var $defaults_dwarf = { 
+  // Dwarfs
+  $config['$defaults_dwarf'] = { 
           min: {
             kon:3,
             agi:1,
@@ -80,8 +88,8 @@
           }
         };
 
-// --- Orks
-  var $defaults_ork = { 
+  // Orks
+  $config['$defaults_ork'] = { 
           min: {
             kon:4,
             agi:1,
@@ -106,8 +114,8 @@
           }
         };
 
-// --- Trolls
-  var $defaults_troll = { 
+  // Trolls
+  $config['$defaults_troll'] = { 
           min: {
             kon:5,
             agi:1,
@@ -131,4 +139,185 @@
             edg:6
           }
         };
-    
+
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// P R I O R I T I E S
+/* Depending on their specialization characters have a certain set of priorities.
+   They have priorities for attributes, skills and gear.
+   A higher priority means a higher chance for a high attribute value at character creation.
+   Priorities range from 0 to 5.
+   No attribute priority can be set for Edge.
+   
+   Usually one or more specializations are calculated to a certain set of priorities 
+   but you can combine specializations to not use the default set of priorities but the special set for this combination.
+   E.g. '$fight' has a default set but combined with '$stealth' it uses te set '$fight_and_stealth'. '$stealth' is still applied afterwords.
+*/
+
+  // Fight
+  var $fight = { 
+          attributes: {
+            kon:5,
+            agi:3,
+            rea:3,
+            str:5,
+            wil:0,
+            log:0,
+            int:1,
+            cha:0
+          }
+        };
+        
+  var $fight_and_magic = { 
+          attributes: {
+            kon:5,
+            agi:3,
+            rea:3,
+            str:5,
+            wil:0,
+            log:0,
+            int:1,
+            cha:0
+          }
+        };
+        
+  var $fight_and_vehicles = { 
+          attributes: {
+            kon:1,
+            agi:5,
+            rea:5,
+            str:0,
+            wil:0,
+            log:5,
+            int:2,
+            cha:0
+          }
+        };
+        
+  var $fight_and_drones = $fight_and_vehicles;
+        
+  var $fight_and_stealth = { 
+          attributes: {
+            kon:2,
+            agi:5,
+            rea:5,
+            str:1,
+            wil:0,
+            log:0,
+            int:2,
+            cha:0
+          }
+        };
+  
+  // Magic     
+  var $magic = { 
+          attributes: {
+            kon:0,
+            agi:0,
+            rea:0,
+            str:0,
+            wil:5,
+            log:5,// according to magic school
+            int:5,
+            cha:5 // according to magic school 
+          }
+        };
+  
+  // Computer     
+  var $computer = { 
+          attributes: {
+            kon:0,
+            agi:0,
+            rea:5,
+            str:0,
+            wil:5,
+            log:5,
+            int:5,
+            cha:0
+          }
+        };
+  
+  // Vehicles     
+  var $vehicles = { 
+          attributes: {
+            kon:0,
+            agi:3,
+            rea:5,
+            str:0,
+            wil:0,
+            log:5,
+            int:2,
+            cha:0
+          }
+        };
+  
+  // Drones     
+  var $drones= { 
+          attributes: {
+            kon:0,
+            agi:5,
+            rea:5,
+            str:0,
+            wil:0,
+            log:5,
+            int:1,
+            cha:0
+          }
+        };
+  
+  // People     
+  var $fcomputer = { 
+          attributes: {
+            kon:0,
+            agi:0,
+            rea:0,
+            str:0,
+            wil:3,
+            log:0,
+            int:5,
+            cha:5
+          }
+        };
+  
+  // Stealth     
+  var $fcomputer = { 
+          attributes: {
+            kon:0,
+            agi:5,
+            rea:3,
+            str:0,
+            wil:1,
+            log:0,
+            int:5,
+            cha:2
+          }
+        };
+  
+  // Knowledge     
+  var $knowledge = { 
+          attributes: {
+            kon:0,
+            agi:0,
+            rea:0,
+            str:0,
+            wil:2,
+            log:5,
+            int:5,
+            cha:1
+          }
+        };
+  
+  // Equipment     
+  var $equipment = { 
+          attributes: {
+            kon:0,
+            agi:1,
+            rea:0,
+            str:0,
+            wil:1,
+            log:5,
+            int:3,
+            cha:1
+          }
+        };
+
