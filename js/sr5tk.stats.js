@@ -17,7 +17,7 @@ var stats = function () {
 	// - min and max racial attributes
 	// - character's priorities
   function random_stats($race, $priorities) {
-    var $points = 4; // needs to become dynamic
+    var $points = 14; // needs to become dynamic
     
     // fetch race default values
     var $race_stats = race_defaults($race); 
@@ -49,8 +49,13 @@ var stats = function () {
   // Go through the priority array and check if the random number is lower than the sum at this position of the array
   // If the random number has reached the sums value, this is set as the attribute number returned
   function get_attribute_by_priority($priorities) {
-
-    var $priority = [6,3,6,1,1,2,1,1];
+    // walk through $$priorities object to make an array of priority numbers
+    var $attribute_names = Object.keys($priorities);
+    var $priority = [];
+    $.each($attribute_names, function(index, value) {
+      $priority.push($priorities[value]);
+    }); 
+    console.log ($priority);
     
     var $array_sum = 0;
     for (var $n = 0; $n < $priority.length; $n++) {
@@ -75,7 +80,7 @@ var stats = function () {
   // The race name has to be delivered as a variable
   // 'human', 'elf', 'dwarf', 'ork', 'troll' 
   function race_defaults($race) {
-    var $character_defaults = jQuery.extend(true, {}, $config['$defaults_'+$race]); // this is a deep copy of the defaults object
+    var $character_defaults = $.extend(true, {}, $config['$defaults_'+$race]); // this is a deep copy of the defaults object
     return $character_defaults;
     
   }
@@ -84,7 +89,7 @@ var stats = function () {
   // Take the array of generated stat values and merge it with an array of stat names
   // Return the new array as html text
   function list_stats($race, $priorities) {
-    var $stat_numbers = random_stats($race,$priorities);
+    var $stat_numbers = random_stats($race, $priorities);
     var $stat_keys = Object.keys($stat_numbers);
     var $stat_text = new Array('Kon ','Ges ','Rea ','Sta ','Wil ','Log ','Int ','Cha ', 'Edg ')
     var $list_of_stats = new Array();

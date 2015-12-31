@@ -1,7 +1,7 @@
 // ####################################################################
 // ### sr5tk.config
 
-var $config = {};
+var $config = {
 // --------------------------------------------------------------------
 // --------------------------------------------------------------------
 // R A C E   V A L U E S
@@ -11,7 +11,7 @@ var $config = {};
 */
 
   // Humans
-  $config['$defaults_human'] = { 
+  $defaults_human : { 
           min: {
             kon:1,
             agi:1,
@@ -34,10 +34,10 @@ var $config = {};
             cha:6,
             edg:7
           }
-        };
+        },
 
   // Elves
-  $config['$defaults_elf'] = { 
+  $defaults_elf : { 
           min: {
             kon:1,
             agi:2,
@@ -60,10 +60,10 @@ var $config = {};
             cha:8,
             edg:6
           }
-        };
+        },
 
   // Dwarfs
-  $config['$defaults_dwarf'] = { 
+  $defaults_dwarf : { 
           min: {
             kon:3,
             agi:1,
@@ -86,10 +86,10 @@ var $config = {};
             cha:6,
             edg:6
           }
-        };
+        },
 
   // Orks
-  $config['$defaults_ork'] = { 
+  $defaults_ork : { 
           min: {
             kon:4,
             agi:1,
@@ -112,10 +112,10 @@ var $config = {};
             cha:5,
             edg:6
           }
-        };
+        },
 
   // Trolls
-  $config['$defaults_troll'] = { 
+  $defaults_troll : { 
           min: {
             kon:5,
             agi:1,
@@ -138,7 +138,7 @@ var $config = {};
             cha:4,
             edg:6
           }
-        };
+        },
 
 // --------------------------------------------------------------------
 // --------------------------------------------------------------------
@@ -155,7 +155,7 @@ var $config = {};
 */
 
   // Fight
-  var $fight = { 
+  $fight : { 
           attributes: {
             kon:5,
             agi:3,
@@ -166,9 +166,9 @@ var $config = {};
             int:1,
             cha:0
           }
-        };
+        },
         
-  var $fight_and_magic = { 
+  $fight_and_magic : { 
           attributes: {
             kon:5,
             agi:3,
@@ -179,9 +179,9 @@ var $config = {};
             int:1,
             cha:0
           }
-        };
+        },
         
-  var $fight_and_vehicles = { 
+  $fight_and_vehicles : { 
           attributes: {
             kon:1,
             agi:5,
@@ -192,11 +192,11 @@ var $config = {};
             int:2,
             cha:0
           }
-        };
+        },
         
-  var $fight_and_drones = $fight_and_vehicles;
+  //$fight_and_drones : $config.$fight_and_vehicles,
         
-  var $fight_and_stealth = { 
+  $fight_and_stealth : { 
           attributes: {
             kon:2,
             agi:5,
@@ -207,10 +207,10 @@ var $config = {};
             int:2,
             cha:0
           }
-        };
+        },
   
   // Magic     
-  var $magic = { 
+  $magic : { 
           attributes: {
             kon:0,
             agi:0,
@@ -221,10 +221,10 @@ var $config = {};
             int:5,
             cha:5 // according to magic school 
           }
-        };
+        },
   
   // Computer     
-  var $computer = { 
+  $computer : { 
           attributes: {
             kon:0,
             agi:0,
@@ -235,10 +235,10 @@ var $config = {};
             int:5,
             cha:0
           }
-        };
+        },
   
   // Vehicles     
-  var $vehicles = { 
+  $vehicles : { 
           attributes: {
             kon:0,
             agi:3,
@@ -249,10 +249,10 @@ var $config = {};
             int:2,
             cha:0
           }
-        };
+        },
   
   // Drones     
-  var $drones= { 
+  $drones: { 
           attributes: {
             kon:0,
             agi:5,
@@ -263,10 +263,10 @@ var $config = {};
             int:1,
             cha:0
           }
-        };
+        },
   
   // People     
-  var $fcomputer = { 
+  $people : { 
           attributes: {
             kon:0,
             agi:0,
@@ -277,10 +277,10 @@ var $config = {};
             int:5,
             cha:5
           }
-        };
+        },
   
   // Stealth     
-  var $fcomputer = { 
+  $stealth : { 
           attributes: {
             kon:0,
             agi:5,
@@ -291,10 +291,10 @@ var $config = {};
             int:5,
             cha:2
           }
-        };
+        },
   
   // Knowledge     
-  var $knowledge = { 
+  $knowledge : { 
           attributes: {
             kon:0,
             agi:0,
@@ -305,10 +305,10 @@ var $config = {};
             int:5,
             cha:1
           }
-        };
+        },
   
   // Equipment     
-  var $equipment = { 
+  $equipment : { 
           attributes: {
             kon:0,
             agi:1,
@@ -319,5 +319,6 @@ var $config = {};
             int:3,
             cha:1
           }
-        };
+        }
 
+}; // closing variable scope '$config'

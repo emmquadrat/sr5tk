@@ -3,7 +3,7 @@
 // ####################################################################
 // ### sr5tk.config
 
-var $config = {};
+var $config = {
 // --------------------------------------------------------------------
 // --------------------------------------------------------------------
 // R A C E   V A L U E S
@@ -13,7 +13,7 @@ var $config = {};
 */
 
   // Humans
-  $config['$defaults_human'] = { 
+  $defaults_human : { 
           min: {
             kon:1,
             agi:1,
@@ -36,10 +36,10 @@ var $config = {};
             cha:6,
             edg:7
           }
-        };
+        },
 
   // Elves
-  $config['$defaults_elf'] = { 
+  $defaults_elf : { 
           min: {
             kon:1,
             agi:2,
@@ -62,10 +62,10 @@ var $config = {};
             cha:8,
             edg:6
           }
-        };
+        },
 
   // Dwarfs
-  $config['$defaults_dwarf'] = { 
+  $defaults_dwarf : { 
           min: {
             kon:3,
             agi:1,
@@ -88,10 +88,10 @@ var $config = {};
             cha:6,
             edg:6
           }
-        };
+        },
 
   // Orks
-  $config['$defaults_ork'] = { 
+  $defaults_ork : { 
           min: {
             kon:4,
             agi:1,
@@ -114,10 +114,10 @@ var $config = {};
             cha:5,
             edg:6
           }
-        };
+        },
 
   // Trolls
-  $config['$defaults_troll'] = { 
+  $defaults_troll : { 
           min: {
             kon:5,
             agi:1,
@@ -140,7 +140,7 @@ var $config = {};
             cha:4,
             edg:6
           }
-        };
+        },
 
 // --------------------------------------------------------------------
 // --------------------------------------------------------------------
@@ -157,7 +157,7 @@ var $config = {};
 */
 
   // Fight
-  var $fight = { 
+  $fight : { 
           attributes: {
             kon:5,
             agi:3,
@@ -168,9 +168,9 @@ var $config = {};
             int:1,
             cha:0
           }
-        };
+        },
         
-  var $fight_and_magic = { 
+  $fight_and_magic : { 
           attributes: {
             kon:5,
             agi:3,
@@ -181,9 +181,9 @@ var $config = {};
             int:1,
             cha:0
           }
-        };
+        },
         
-  var $fight_and_vehicles = { 
+  $fight_and_vehicles : { 
           attributes: {
             kon:1,
             agi:5,
@@ -194,11 +194,11 @@ var $config = {};
             int:2,
             cha:0
           }
-        };
+        },
         
-  var $fight_and_drones = $fight_and_vehicles;
+  //$fight_and_drones : $config.$fight_and_vehicles,
         
-  var $fight_and_stealth = { 
+  $fight_and_stealth : { 
           attributes: {
             kon:2,
             agi:5,
@@ -209,10 +209,10 @@ var $config = {};
             int:2,
             cha:0
           }
-        };
+        },
   
   // Magic     
-  var $magic = { 
+  $magic : { 
           attributes: {
             kon:0,
             agi:0,
@@ -223,10 +223,10 @@ var $config = {};
             int:5,
             cha:5 // according to magic school 
           }
-        };
+        },
   
   // Computer     
-  var $computer = { 
+  $computer : { 
           attributes: {
             kon:0,
             agi:0,
@@ -237,10 +237,10 @@ var $config = {};
             int:5,
             cha:0
           }
-        };
+        },
   
   // Vehicles     
-  var $vehicles = { 
+  $vehicles : { 
           attributes: {
             kon:0,
             agi:3,
@@ -251,10 +251,10 @@ var $config = {};
             int:2,
             cha:0
           }
-        };
+        },
   
   // Drones     
-  var $drones= { 
+  $drones: { 
           attributes: {
             kon:0,
             agi:5,
@@ -265,10 +265,10 @@ var $config = {};
             int:1,
             cha:0
           }
-        };
+        },
   
   // People     
-  var $fcomputer = { 
+  $people : { 
           attributes: {
             kon:0,
             agi:0,
@@ -279,10 +279,10 @@ var $config = {};
             int:5,
             cha:5
           }
-        };
+        },
   
   // Stealth     
-  var $fcomputer = { 
+  $stealth : { 
           attributes: {
             kon:0,
             agi:5,
@@ -293,10 +293,10 @@ var $config = {};
             int:5,
             cha:2
           }
-        };
+        },
   
   // Knowledge     
-  var $knowledge = { 
+  $knowledge : { 
           attributes: {
             kon:0,
             agi:0,
@@ -307,10 +307,10 @@ var $config = {};
             int:5,
             cha:1
           }
-        };
+        },
   
   // Equipment     
-  var $equipment = { 
+  $equipment : { 
           attributes: {
             kon:0,
             agi:1,
@@ -321,9 +321,9 @@ var $config = {};
             int:3,
             cha:1
           }
-        };
+        }
 
-
+}; // closing variable scope '$config'
 
 // ####################################################################
 // ### sr5tk.stats
@@ -344,7 +344,7 @@ var stats = function () {
 	// - min and max racial attributes
 	// - character's priorities
   function random_stats($race, $priorities) {
-    var $points = 4; // needs to become dynamic
+    var $points = 14; // needs to become dynamic
     
     // fetch race default values
     var $race_stats = race_defaults($race); 
@@ -376,8 +376,13 @@ var stats = function () {
   // Go through the priority array and check if the random number is lower than the sum at this position of the array
   // If the random number has reached the sums value, this is set as the attribute number returned
   function get_attribute_by_priority($priorities) {
-
-    var $priority = [6,3,6,1,1,2,1,1];
+    // walk through $$priorities object to make an array of priority numbers
+    var $attribute_names = Object.keys($priorities);
+    var $priority = [];
+    $.each($attribute_names, function(index, value) {
+      $priority.push($priorities[value]);
+    }); 
+    console.log ($priority);
     
     var $array_sum = 0;
     for (var $n = 0; $n < $priority.length; $n++) {
@@ -402,7 +407,7 @@ var stats = function () {
   // The race name has to be delivered as a variable
   // 'human', 'elf', 'dwarf', 'ork', 'troll' 
   function race_defaults($race) {
-    var $character_defaults = jQuery.extend(true, {}, $config['$defaults_'+$race]); // this is a deep copy of the defaults object
+    var $character_defaults = $.extend(true, {}, $config['$defaults_'+$race]); // this is a deep copy of the defaults object
     return $character_defaults;
     
   }
@@ -411,7 +416,7 @@ var stats = function () {
   // Take the array of generated stat values and merge it with an array of stat names
   // Return the new array as html text
   function list_stats($race, $priorities) {
-    var $stat_numbers = random_stats($race,$priorities);
+    var $stat_numbers = random_stats($race, $priorities);
     var $stat_keys = Object.keys($stat_numbers);
     var $stat_text = new Array('Kon ','Ges ','Rea ','Sta ','Wil ','Log ','Int ','Cha ', 'Edg ')
     var $list_of_stats = new Array();
@@ -472,44 +477,63 @@ var form = function () {
   // ------------------------------------------------------------------
 	// --- local functions	
 	// ------------------------------------------------------------------
-/*
 	
-	// R A N D O M   S T A T S
-	function random_stats($race) {
-    var $points = 14; // needs to become dynamic
-    
-    // fetch race default values
-    var $race_stats = race_defaults($race);
-    var $attributes = $race_stats['min'];
-    var $attribute_names = Object.keys($attributes);
-    
-    // loop troug the available points and increase an attribute's (i.e. key's) value
-    for ($n = 0; $n < $points; $n ++) { 
-      
-      var $random_number = get_attribute_by_priority();
-      var $current_attribute = $attribute_names[$random_number];
-
-      if ($attributes[$current_attribute] < $race_stats['max'][$current_attribute]) {
-         $attributes[$current_attribute] ++;
-      } else { 
-         $n --;
+	// R E A D   P R I O R I T I E S
+	function manage_priorities() {
+  	
+  	// walk though the checkboxes and make an array '$specializations' with all values checked
+  	var $form__specializations =  $('[data-sr5tk="specializations_checkbox"]');
+    var $specializations = [];
+  	$.each($form__specializations, function(index, value) { 
+      if ( $(this).prop('checked') ) {
+        $specializations.push( $(this).attr('value') );
       }
-    }
-    // add a random value for Egde
-    $attributes.edg += Math.round(Math.random()*3);
-    // store the stats in character array
-    character.add_values('attributes',$attributes);
-    return $attributes;
+    });
+    
+    // gather priorities settings from $config and combine them into a single object '$character_priorities'
+    // make an average für each attribute
+    var $character_priorities = {};
+    var $number_of_specializations = 0;
+    var $this_specialisazion = {};
+    var $attribute_names = [];
+    
+    // walk though the list of checked spesializations
+    $.each($specializations, function(index, value) {
+      // if an object exists in $config …
+      if (typeof $config['$'+value] !== 'undefined') {
+        // … make a copy of the object and put it in $this_specialisazion
+        $this_specialisazion = $.extend(true, {}, $config['$'+value]);
+        // Extract the attribute's (key's) names
+        $attribute_names = Object.keys($this_specialisazion.attributes);
+        // walk through the attributes (keys) and put sum them
+        $.each($attribute_names, function(index, value) {
+          if ($character_priorities[value]) {
+            $character_priorities[value] += $this_specialisazion.attributes[value];
+          } else {
+            // If the attribute (key) isn't set allready, make it 
+            // and add +1 because the numbers in the $config range from 0 to 5 but we want the final numbers to range from 1 to 6
+            $character_priorities[value] = $this_specialisazion.attributes[value] + 1;
+          }
+        });
+        $number_of_specializations ++;
+      }
+    });
+    // walk trough $character_priorities and divide it by the number of specializations to make an average number
+    $.each($attribute_names, function(index, value) {
+      $character_priorities[value] = Math.round( $character_priorities[value] / $number_of_specializations );
+    });
+    
+    return $character_priorities;
+    
   }
     
   // ------------------------------------------------------------------
 	// --- public functions	
 	return {
-		build: function($race) {
-			$('[data-sr5tk="echo_attributes"').html(list_stats($race));
+		read: function() {
+			return manage_priorities();
 		}
 	}
-*/
 	
 }();
 
@@ -517,8 +541,28 @@ var form = function () {
 // --- listeners
 
 jQuery( document ).ready(function( $ ) {
+  // Listen for the "Generate" Button to launch character creation
   $('[data-sr5tk="button_launch_generator"]').click( function() {
-    stats.build('human', $priorities);
+    // Check if any specialization boxes are checked.
+    // Alert if not.
+    var checked_boxes = $('[data-sr5tk="specializations_checkbox"]:checked');
+    if (checked_boxes.length > 0) {
+      stats.build( 'human', form.read() );
+    } else {
+      alert ("Checkbox missing");
+    }
   });
 });	
+
+
+
+
+
+
+
+
+
+
+
+
 
