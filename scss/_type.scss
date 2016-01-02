@@ -1,0 +1,16 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,800);
+
+html {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px
+}
+
+
+$font-size_base: 2rem;
+
+@mixin fontstyle_h2() {
+  font-size: $font-size_base;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}

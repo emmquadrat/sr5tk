@@ -1,0 +1,37 @@
+$background-color: #141f1e;
+
+body {
+  background: $background-color;
+  color: #fff;
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: $font-size_base;
+  font-weight: 300;
+  padding: 2%;
+  box-sizing: border-box;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 140px;
+}
+
+.header-icon {
+  display: block;
+  height: 120px;
+  margin-top: 25px;
+
+  svg {
+    height: 100%;
+    width: auto;
+  }
+
+}
+
+.page-headline {
+  font-weight: 300;
+  font-size: $font-size_base;
+  display: block;
+  height: 0;
+  margin-top: -76px;
+}
