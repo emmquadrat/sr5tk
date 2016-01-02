@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SR5 Toolkit - Character Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="js/min/sr5tk.combined-min.js"></script>
+
+    <link rel="stylesheet" href="css/character_designer___root.css">
+
+  </head>
+  <body>
+    
+    <form> 
+      <fieldset class="specializations">
+        <input id="professionality" data-sr5tk="professionality_slider" type="range" value="0" min="0" max="5" step="1" >
+      </fieldset>
+      <fieldset class="specializations"> 
+        <label for="fight">
+          <input type="checkbox" data-sr5tk="specializations_checkbox" name="specialization" value="fight" id="fight">
+          Kampf
+        </label> 
+        <label for="magic">
+           <input type="checkbox" data-sr5tk="specializations_checkbox" name="specialization" value="magic" id="magic">
+           Magie
+        </label> 
+        <label for="computer">
+          <input type="checkbox" data-sr5tk="specializations_checkbox" name="specialization" value="computer" id="computer">
+          Computer
+        </label> 
+        <label for="vehicles">
+          <input type="checkbox" data-sr5tk="specializations_checkbox" name="specialization" value="vehicles" id="vehicles">
+          Fahrzeuge
+        </label>
+        <label for="drones">
+          <input type="checkbox" data-sr5tk="specializations_checkbox" name="specialization" value="drones" id="drones">
+          Drohnen
+        </label>
+        <label for="people">
+          <input type="checkbox" data-sr5tk="specializations_checkbox" name="specialization" value="people" id="people">
+          Menschen
+        </label>
+        <label for="stealth">
+          <input type="checkbox" data-sr5tk="specializations_checkbox" name="specialization" value="stealth" id="stealth">
+          Heimlichkeit
+        </label>
+        <label for="knowledge">
+          <input type="checkbox" data-sr5tk="specializations_checkbox" name="specialization" value="knowledge" id="knowledge">
+          Wissen
+        </label>
+        <label for="equipment">
+          <input type="checkbox" data-sr5tk="specializations_checkbox" name="specialization" value="equipment" id="equipment">
+          Ausrüstung
+        </label>
+      </fieldset>
+      
+      <button type="button" data-sr5tk="button_launch_generator">Generate</button>
+      
+    </form>
+    
+    <h1 data-sr5tk="echo_attributes">…</h1>
+    <h2 data-sr5tk="echo_species">…</h2>
+    
+  </body>
+</html>
