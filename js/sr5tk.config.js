@@ -170,14 +170,14 @@ var $config = {
         
   $fight_and_magic : { 
           attributes: {
-            kon:5,
-            agi:3,
-            rea:3,
-            str:5,
-            wil:0,
-            log:0,
-            int:1,
-            cha:0
+            kon:2,
+            agi:2,
+            rea:5,
+            str:0,
+            wil:5,
+            log:5,// according to magic school
+            int:5,
+            cha:5 // according to magic school
           }
         },
         

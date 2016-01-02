@@ -172,14 +172,14 @@ var $config = {
         
   $fight_and_magic : { 
           attributes: {
-            kon:5,
-            agi:3,
-            rea:3,
-            str:5,
-            wil:0,
-            log:0,
-            int:1,
-            cha:0
+            kon:2,
+            agi:2,
+            rea:5,
+            str:0,
+            wil:5,
+            log:5,// according to magic school
+            int:5,
+            cha:5 // according to magic school
           }
         },
         
@@ -326,118 +326,9 @@ var $config = {
 }; // closing variable scope '$config'
 
 // ####################################################################
-// ### sr5tk.stats
-
-var stats = function () {
-  
-  // ------------------------------------------------------------------
-	// --- variables
-	
-  // ------------------------------------------------------------------
-	// --- local functions	
-	// ------------------------------------------------------------------
-	
-	// R A N D O M   S T A T S
-	// Generate an array of random attribute values
-	// take into consideration: 
-	// - available points
-	// - min and max racial attributes
-	// - character's priorities
-  function random_stats($race, $priorities) {
-    var $points = 14; // needs to become dynamic
-    
-    // fetch race default values
-    var $race_stats = race_defaults($race); 
-    var $attributes = $race_stats['min'];
-    var $attribute_names = Object.keys($attributes);
-    
-    // loop troug the available points and increase an attribute's (i.e. key's) value
-    for (var $points_spent = 0; $points_spent < $points; $points_spent ++) {
-      
-      var $random_number = get_attribute_by_priority($priorities);
-      var $current_attribute = $attribute_names[$random_number];
-
-      if ($attributes[$current_attribute] < $race_stats['max'][$current_attribute]) {
-         $attributes[$current_attribute] ++;
-      } else { 
-         $points_spent --;
-      }
-    }
-    // add a random value for Egde
-    $attributes.edg += Math.round(Math.random()*3);
-    // store the stats in character array
-    character.add_values('attributes',$attributes);
-    
-    return $attributes;
-  }
-
-  // A T T R I B U T E   N U M B E R   B Y   P R I O R I T Y 
-  // Make a random number equal the sum of the priority arra
-  // Go through the priority array and check if the random number is lower than the sum at this position of the array
-  // If the random number has reached the sums value, this is set as the attribute number returned
-  function get_attribute_by_priority($priorities) {
-    // walk through $$priorities object to make an array of priority numbers
-    var $attribute_names = Object.keys($priorities);
-    var $priority = [];
-    $.each($attribute_names, function(index, value) {
-      $priority.push($priorities[value]);
-    }); 
-    console.log ($priority);
-    
-    var $array_sum = 0;
-    for (var $n = 0; $n < $priority.length; $n++) {
-      $array_sum += $priority[$n];
-    }
-
-    var $random = Math.round(Math.random() * ($array_sum -1)); 
-    
-    var $attr = 0;
-    var $attr_array_position = 0;
-    for (var $n = 0; $n < $priority.length; $n++) {
-      $attr_array_position += $priority[$n];
-      if($random > $attr_array_position) {
-        $attr ++;
-      }
-    }
-    return $attr;
-  }
-  
-  // R A C I A L   D E F A U L T S 
-  // Return the racial min and max attribute values
-  // The race name has to be delivered as a variable
-  // 'human', 'elf', 'dwarf', 'ork', 'troll' 
-  function race_defaults($race) {
-    var $character_defaults = $.extend(true, {}, $config['$defaults_'+$race]); // this is a deep copy of the defaults object
-    return $character_defaults;
-    
-  }
-  
-  // D I S P L A Y   A T T R I B U T E S   A S   H T M L 
-  // Take the array of generated stat values and merge it with an array of stat names
-  // Return the new array as html text
-  function list_stats($race, $priorities) {
-    var $stat_numbers = random_stats($race, $priorities);
-    var $stat_keys = Object.keys($stat_numbers);
-    var $stat_text = new Array('Kon ','Ges ','Rea ','Sta ','Wil ','Log ','Int ','Cha ', 'Edg ')
-    var $list_of_stats = new Array();
-    for (var $n = 0; $n < $stat_text.length; $n ++) {
-      $list_of_stats[$n] = $stat_text[$n] + $stat_numbers[$stat_keys[$n]];
-    }
-    return $list_of_stats.join(', ');
-  }
-  
-  // ------------------------------------------------------------------
-	// --- public functions	
-	return {
-		build: function($race, $priorities) {
-  		$('[data-sr5tk="echo_attributes"').html(list_stats($race, $priorities));
-		}
-	}
-	
-}();
-
-// ####################################################################
 // ### sr5tk.character_values
+
+var $character_features = {};
 
 var character = function () {
   
@@ -448,9 +339,6 @@ var character = function () {
 	// --- local functions	
 	
   function define_features($group, $list_of_features) {
-    if (typeof $character_features === 'undefined') {
-      $character_features = new Array();
-    } 
     $character_features[$group] = $list_of_features;
     
     return ($character_features);
@@ -494,25 +382,36 @@ var form = function () {
     // make an average für each attribute
     var $character_priorities = {};
     var $number_of_specializations = 0;
-    var $this_specialisazion = {};
+    var $this_specialization = {};
     var $attribute_names = [];
     
     // walk though the list of checked spesializations
     $.each($specializations, function(index, value) {
-      // if an object exists in $config …
+      // Check if an object exists in $config
       if (typeof $config['$'+value] !== 'undefined') {
-        // … make a copy of the object and put it in $this_specialisazion
-        $this_specialisazion = $.extend(true, {}, $config['$'+value]);
+        // Check if there is a config for this set of specializations (like fight + vehicles)
+        var $found_special_config = false;
+        $.each($specializations, function(index_two, value_two) {
+          // If you find a special set of specializations use this …
+          if (typeof $config['$'+value+'_and_'+value_two] !== 'undefined') {
+            $this_specialization = $.extend(true, {}, $config['$'+value+'_and_'+value_two]);
+            $found_special_config = true;
+          } 
+        });
+        // … otherwise make a copy of the object and put it in $this_specialization
+        if ( !$found_special_config ) {
+          $this_specialization = $.extend(true, {}, $config['$'+value]);       
+        }
         // Extract the attribute's (key's) names
-        $attribute_names = Object.keys($this_specialisazion.attributes);
-        // walk through the attributes (keys) and put sum them
+        $attribute_names = Object.keys($this_specialization.attributes);
+        // Walk through the attributes (keys) and sum them
         $.each($attribute_names, function(index, value) {
           if ($character_priorities[value]) {
-            $character_priorities[value] += $this_specialisazion.attributes[value];
-          } else {
+            $character_priorities[value] += $this_specialization.attributes[value];
+          } else { 
             // If the attribute (key) isn't set allready, make it 
             // and add +1 because the numbers in the $config range from 0 to 5 but we want the final numbers to range from 1 to 6
-            $character_priorities[value] = $this_specialisazion.attributes[value] + 1;
+            $character_priorities[value] = $this_specialization.attributes[value] + 1;
           }
         });
         $number_of_specializations ++;
@@ -526,12 +425,33 @@ var form = function () {
     return $character_priorities;
     
   }
+  
+  function manage_professionality() {
+    var $professionality_value = $('[data-sr5tk="professionality_slider"]').val();
+    return $professionality_value;
+  }
+  
+  function random_species() {
+    var $rand = Math.random()*100;
+    if ($rand > 0)  {$species = 'human';}
+    if ($rand > 60) {$species = 'elf';}
+    if ($rand > 70) {$species = 'dwarf';}
+    if ($rand > 80) {$species = 'ork';}
+    if ($rand > 95) {$species = 'troll';}
+    return $species;
+  }
     
   // ------------------------------------------------------------------
 	// --- public functions	
 	return {
-		read: function() {
+		read_priorities: function() {
 			return manage_priorities();
+		},
+		read_professionality: function() {
+			return manage_professionality();
+		},
+		generate_species: function() {
+      return random_species();
 		}
 	}
 	
@@ -541,13 +461,16 @@ var form = function () {
 // --- listeners
 
 jQuery( document ).ready(function( $ ) {
+  
   // Listen for the "Generate" Button to launch character creation
   $('[data-sr5tk="button_launch_generator"]').click( function() {
     // Check if any specialization boxes are checked.
     // Alert if not.
     var checked_boxes = $('[data-sr5tk="specializations_checkbox"]:checked');
     if (checked_boxes.length > 0) {
-      stats.build( 'human', form.read() );
+      stats.build( form.generate_species(), form.read_priorities(), form.read_professionality() );
+  		$('[data-sr5tk="echo_attributes"').html(display.list_charactervalues('priorities'));
+  		$('[data-sr5tk="echo_species"]').html(display.list_charactervalues('species'));
     } else {
       alert ("Checkbox missing");
     }
@@ -565,4 +488,153 @@ jQuery( document ).ready(function( $ ) {
 
 
 
+
+// ####################################################################
+// ### sr5tk.stats
+
+var stats = function () {
+  
+  // ------------------------------------------------------------------
+	// --- variables
+	
+  // ------------------------------------------------------------------
+	// --- local functions	
+	// ------------------------------------------------------------------
+	
+	// R A N D O M   S T A T S
+	// Generate an array of random attribute values
+	// take into consideration: 
+	// - available points
+	// - min and max racial attributes
+	// - character's priorities
+  function random_stats($race, $priorities, $professionality) {
+    
+    var $points = get_points($professionality); 
+    
+    // fetch race default values
+    var $race_stats = race_defaults($race); 
+    var $attributes = $race_stats['min'];
+    var $attribute_names = Object.keys($attributes);
+    
+    // loop troug the available points and increase an attribute's (i.e. key's) value
+    for (var $points_spent = 0; $points_spent < $points; $points_spent ++) {
+      
+      var $random_number = get_attribute_by_priority($priorities);
+      var $current_attribute = $attribute_names[$random_number];
+
+      if ($attributes[$current_attribute] < $race_stats['max'][$current_attribute]) {
+         $attributes[$current_attribute] ++;
+      } else { 
+         $points_spent --;
+      }
+    }
+    // add a random value for Egde
+    $attributes.edg += Math.round(Math.random()*3);
+    // store the stats in character array
+    character.add_values('attributes',$attributes);
+    character.add_values('species',$race);
+    
+    return $attributes;
+  }
+  
+  // P R O F E S S I O N A L I T Y   A N D   D E V E L O P M E N T   P O I N T S
+  // Calculate the points available for attribute increase based on the professionality rating
+  function get_points($professionality) {
+    return ( 22 - 8 + ($professionality * 4) );
+  }
+
+  // A T T R I B U T E   N U M B E R   B Y   P R I O R I T Y 
+  // Make a random number equal the sum of the priority arra
+  // Go through the priority array and check if the random number is lower than the sum at this position of the array
+  // If the random number has reached the sums value, this is set as the attribute number returned
+  function get_attribute_by_priority($priorities) {
+    // walk through $$priorities object to make an array of priority numbers
+    var $attribute_names = Object.keys($priorities);
+    var $priority = [];
+    $.each($attribute_names, function(index, value) {
+      $priority.push($priorities[value]);
+    }); 
+    
+    var $array_sum = 0;
+    for (var $n = 0; $n < $priority.length; $n++) {
+      $array_sum += $priority[$n];
+    }
+
+    var $random = Math.round(Math.random() * ($array_sum -1)); 
+    
+    var $attr = 0;
+    var $attr_array_position = 0;
+    for (var $n = 0; $n < $priority.length; $n++) {
+      $attr_array_position += $priority[$n];
+      if($random >= $attr_array_position) {
+        $attr ++;
+      }
+    }
+    return $attr;
+  }
+  
+  // R A C I A L   D E F A U L T S 
+  // Return the racial min and max attribute values
+  // The race name has to be delivered as a variable
+  // 'human', 'elf', 'dwarf', 'ork', 'troll' 
+  function race_defaults($race) {
+    var $character_defaults = $.extend(true, {}, $config['$defaults_' + $race]); // this is a deep copy of the defaults object
+    return $character_defaults; 
+  }
+  
+  // ------------------------------------------------------------------
+	// --- public functions	
+	return {
+		build: function($race, $priorities, $professionality) {
+  		random_stats($race, $priorities, $professionality);
+		}
+	}
+	
+}();
+
+// ####################################################################
+// ### sr5tk.display
+
+var display = function () {
+  
+  // ------------------------------------------------------------------
+	// --- variables
+	
+  // ------------------------------------------------------------------
+	// --- local functions	
+	// ------------------------------------------------------------------
+	  
+  // R E T U R N   A T T R I B U T E S   A S   H T M L 
+  function list_stats($list_what) {
+    // Take the array of generated stat values and merge it with an array of stat names
+    // Return the new array as html text
+    if ($list_what === 'priorities') {
+      var $stat_numbers = $character_features.attributes;
+      var $stat_keys = Object.keys($stat_numbers);
+      var $stat_text = new Array('Kon ','Ges ','Rea ','Sta ','Wil ','Log ','Int ','Cha ', 'Edg ')
+      var $list_of_stats = new Array();
+      for (var $n = 0; $n < $stat_text.length; $n ++) {
+        $list_of_stats[$n] = $stat_text[$n] + $stat_numbers[$stat_keys[$n]];
+      }
+      return $list_of_stats.join(', '); 
+    }
+    if ($list_what === 'species') {
+      var $species = $character_features.species;
+      if ($species === 'human') { return 'Mensch';}
+      if ($species === 'elf')   { return 'Elf';}
+      if ($species === 'ork')   { return 'Ork';}
+      if ($species === 'dwarf') { return 'Zwerg';}
+      if ($species === 'troll') { return 'Troll';}
+    }
+  }
+  
+  // ------------------------------------------------------------------
+	// --- public functions	
+	return {
+		list_charactervalues: function($list_what) {
+  		return list_stats($list_what);
+		}
+	}
+	
+}();
 

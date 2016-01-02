@@ -26,25 +26,36 @@ var form = function () {
     // make an average für each attribute
     var $character_priorities = {};
     var $number_of_specializations = 0;
-    var $this_specialisazion = {};
+    var $this_specialization = {};
     var $attribute_names = [];
     
     // walk though the list of checked spesializations
     $.each($specializations, function(index, value) {
-      // if an object exists in $config …
+      // Check if an object exists in $config
       if (typeof $config['$'+value] !== 'undefined') {
-        // … make a copy of the object and put it in $this_specialisazion
-        $this_specialisazion = $.extend(true, {}, $config['$'+value]);
+        // Check if there is a config for this set of specializations (like fight + vehicles)
+        var $found_special_config = false;
+        $.each($specializations, function(index_two, value_two) {
+          // If you find a special set of specializations use this …
+          if (typeof $config['$'+value+'_and_'+value_two] !== 'undefined') {
+            $this_specialization = $.extend(true, {}, $config['$'+value+'_and_'+value_two]);
+            $found_special_config = true;
+          } 
+        });
+        // … otherwise make a copy of the object and put it in $this_specialization
+        if ( !$found_special_config ) {
+          $this_specialization = $.extend(true, {}, $config['$'+value]);       
+        }
         // Extract the attribute's (key's) names
-        $attribute_names = Object.keys($this_specialisazion.attributes);
-        // walk through the attributes (keys) and put sum them
+        $attribute_names = Object.keys($this_specialization.attributes);
+        // Walk through the attributes (keys) and sum them
         $.each($attribute_names, function(index, value) {
           if ($character_priorities[value]) {
-            $character_priorities[value] += $this_specialisazion.attributes[value];
-          } else {
+            $character_priorities[value] += $this_specialization.attributes[value];
+          } else { 
             // If the attribute (key) isn't set allready, make it 
             // and add +1 because the numbers in the $config range from 0 to 5 but we want the final numbers to range from 1 to 6
-            $character_priorities[value] = $this_specialisazion.attributes[value] + 1;
+            $character_priorities[value] = $this_specialization.attributes[value] + 1;
           }
         });
         $number_of_specializations ++;
@@ -58,12 +69,33 @@ var form = function () {
     return $character_priorities;
     
   }
+  
+  function manage_professionality() {
+    var $professionality_value = $('[data-sr5tk="professionality_slider"]').val();
+    return $professionality_value;
+  }
+  
+  function random_species() {
+    var $rand = Math.random()*100;
+    if ($rand > 0)  {$species = 'human';}
+    if ($rand > 60) {$species = 'elf';}
+    if ($rand > 70) {$species = 'dwarf';}
+    if ($rand > 80) {$species = 'ork';}
+    if ($rand > 95) {$species = 'troll';}
+    return $species;
+  }
     
   // ------------------------------------------------------------------
 	// --- public functions	
 	return {
-		read: function() {
+		read_priorities: function() {
 			return manage_priorities();
+		},
+		read_professionality: function() {
+			return manage_professionality();
+		},
+		generate_species: function() {
+      return random_species();
 		}
 	}
 	
@@ -73,13 +105,16 @@ var form = function () {
 // --- listeners
 
 jQuery( document ).ready(function( $ ) {
+  
   // Listen for the "Generate" Button to launch character creation
   $('[data-sr5tk="button_launch_generator"]').click( function() {
     // Check if any specialization boxes are checked.
     // Alert if not.
     var checked_boxes = $('[data-sr5tk="specializations_checkbox"]:checked');
     if (checked_boxes.length > 0) {
-      stats.build( 'human', form.read() );
+      stats.build( form.generate_species(), form.read_priorities(), form.read_professionality() );
+  		$('[data-sr5tk="echo_attributes"').html(display.list_charactervalues('priorities'));
+  		$('[data-sr5tk="echo_species"]').html(display.list_charactervalues('species'));
     } else {
       alert ("Checkbox missing");
     }

@@ -1,6 +1,8 @@
 // ####################################################################
 // ### sr5tk.character_values
 
+var $character_features = {};
+
 var character = function () {
   
   // ------------------------------------------------------------------
@@ -10,9 +12,6 @@ var character = function () {
 	// --- local functions	
 	
   function define_features($group, $list_of_features) {
-    if (typeof $character_features === 'undefined') {
-      $character_features = new Array();
-    } 
     $character_features[$group] = $list_of_features;
     
     return ($character_features);
