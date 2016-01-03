@@ -11,7 +11,7 @@ var $config = {
 */
 
   // Humans
-  $defaults_human : { 
+  $defaults_human : {
           min: {
             kon:1,
             agi:1,
@@ -22,7 +22,7 @@ var $config = {
             int:1,
             cha:1,
             edg:2
-          }, 
+          },
           max: {
             kon:6,
             agi:6,
@@ -37,7 +37,7 @@ var $config = {
         },
 
   // Elves
-  $defaults_elf : { 
+  $defaults_elf : {
           min: {
             kon:1,
             agi:2,
@@ -48,7 +48,7 @@ var $config = {
             int:1,
             cha:3,
             edg:1
-          }, 
+          },
           max: {
             kon:6,
             agi:7,
@@ -63,7 +63,7 @@ var $config = {
         },
 
   // Dwarfs
-  $defaults_dwarf : { 
+  $defaults_dwarf : {
           min: {
             kon:3,
             agi:1,
@@ -74,7 +74,7 @@ var $config = {
             int:1,
             cha:1,
             edg:1
-          }, 
+          },
           max: {
             kon:8,
             agi:6,
@@ -89,7 +89,7 @@ var $config = {
         },
 
   // Orks
-  $defaults_ork : { 
+  $defaults_ork : {
           min: {
             kon:4,
             agi:1,
@@ -100,7 +100,7 @@ var $config = {
             int:1,
             cha:1,
             edg:1
-          }, 
+          },
           max: {
             kon:9,
             agi:6,
@@ -115,7 +115,7 @@ var $config = {
         },
 
   // Trolls
-  $defaults_troll : { 
+  $defaults_troll : {
           min: {
             kon:5,
             agi:1,
@@ -126,7 +126,7 @@ var $config = {
             int:1,
             cha:1,
             edg:1
-          }, 
+          },
           max: {
             kon:10,
             agi:5,
@@ -148,14 +148,14 @@ var $config = {
    A higher priority means a higher chance for a high attribute value at character creation.
    Priorities range from 0 to 5.
    No attribute priority can be set for Edge.
-   
-   Usually one or more specializations are calculated to a certain set of priorities 
+
+   Usually one or more specializations are calculated to a certain set of priorities
    but you can combine specializations to not use the default set of priorities but the special set for this combination.
    E.g. '$fight' has a default set but combined with '$stealth' it uses te set '$fight_and_stealth'. '$stealth' is still applied afterwords.
 */
 
   // Fight
-  $fight : { 
+  $fight : {
           attributes: {
             kon:5,
             agi:3,
@@ -165,10 +165,17 @@ var $config = {
             log:0,
             int:1,
             cha:0
+          },
+          skills: {
+            5:['pistols','automatics','unarmed combat'],
+            4:['longarms','heavy weapons','throwing weapons'],
+            3:['gunnery','blades','clubs'],
+            2:[],
+            1:['gymnastics','sneaking']
           }
         },
-        
-  $fight_and_magic : { 
+
+  $fight_and_magic : {
           attributes: {
             kon:2,
             agi:2,
@@ -178,10 +185,17 @@ var $config = {
             log:5,// according to magic school
             int:5,
             cha:5 // according to magic school
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         },
-        
-  $fight_and_vehicles : { 
+
+  $fight_and_vehicles : {
           attributes: {
             kon:1,
             agi:5,
@@ -191,12 +205,19 @@ var $config = {
             log:5,
             int:2,
             cha:0
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         },
-        
+
   //$fight_and_drones : $config.$fight_and_vehicles,
-        
-  $fight_and_stealth : { 
+
+  $fight_and_stealth : {
           attributes: {
             kon:2,
             agi:5,
@@ -206,11 +227,18 @@ var $config = {
             log:0,
             int:2,
             cha:0
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         },
-  
-  // Magic     
-  $magic : { 
+
+  // Magic
+  $magic : {
           attributes: {
             kon:0,
             agi:0,
@@ -219,12 +247,19 @@ var $config = {
             wil:5,
             log:5,// according to magic school
             int:5,
-            cha:5 // according to magic school 
+            cha:5 // according to magic school
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         },
-  
-  // Computer     
-  $computer : { 
+
+  // Computer
+  $computer : {
           attributes: {
             kon:0,
             agi:0,
@@ -234,11 +269,18 @@ var $config = {
             log:5,
             int:5,
             cha:0
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         },
-  
-  // Vehicles     
-  $vehicles : { 
+
+  // Vehicles
+  $vehicles : {
           attributes: {
             kon:0,
             agi:3,
@@ -248,11 +290,18 @@ var $config = {
             log:5,
             int:2,
             cha:0
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         },
-  
-  // Drones     
-  $drones: { 
+
+  // Drones
+  $drones: {
           attributes: {
             kon:0,
             agi:5,
@@ -262,11 +311,18 @@ var $config = {
             log:5,
             int:1,
             cha:0
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         },
-  
-  // People     
-  $people : { 
+
+  // People
+  $people : {
           attributes: {
             kon:0,
             agi:0,
@@ -276,11 +332,18 @@ var $config = {
             log:0,
             int:5,
             cha:5
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         },
-  
-  // Stealth     
-  $stealth : { 
+
+  // Stealth
+  $stealth : {
           attributes: {
             kon:0,
             agi:5,
@@ -290,11 +353,18 @@ var $config = {
             log:0,
             int:5,
             cha:2
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         },
-  
-  // Knowledge     
-  $knowledge : { 
+
+  // Knowledge
+  $knowledge : {
           attributes: {
             kon:0,
             agi:0,
@@ -304,11 +374,18 @@ var $config = {
             log:5,
             int:5,
             cha:1
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         },
-  
-  // Equipment     
-  $equipment : { 
+
+  // Equipment
+  $equipment : {
           attributes: {
             kon:0,
             agi:1,
@@ -318,6 +395,13 @@ var $config = {
             log:5,
             int:3,
             cha:1
+          },
+          skills: {
+            5:[],
+            4:[],
+            3:[],
+            2:[],
+            1:[]
           }
         }
 

@@ -2,13 +2,16 @@
 
 html {
   font-family: 'Open Sans', sans-serif;
-  font-size: 12px
+  font-size: 9px;
+  @include breakpoint($panda) {
+    font-size: 12px;
+  }
 }
-
 
 $font-size_base: 2rem;
 
 @mixin fontstyle_h2() {
+  text-align: left;
   font-size: $font-size_base;
   font-weight: 800;
   text-transform: uppercase;

@@ -1,0 +1,13 @@
+// breakpoints
+$koala 		:	0em;
+$panda 		:	33em;
+$brownbear	:	60em;
+$grizzly	:	90em;
+
+html {
+	box-sizing: border-box;
+}
+
+*, *:before, *:after {
+	box-sizing: inherit;
+}
