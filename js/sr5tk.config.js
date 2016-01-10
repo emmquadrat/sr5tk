@@ -171,7 +171,7 @@ var $config = {
             4:['longarms','heavy weapons','throwing weapons'],
             3:['gunnery','blades','clubs'],
             2:[],
-            1:['gymnastics','sneaking']
+            1:['gymnastics','sneaking','test']
           }
         },
 
@@ -355,11 +355,11 @@ var $config = {
             cha:2
           },
           skills: {
-            5:[],
-            4:[],
-            3:[],
-            2:[],
-            1:[]
+            5:['gymnastics','sneaking'],
+            4:['blades'],
+            3:['locksmith','pistols','blades'],
+            2:['palming','automatics','throwing weapons','diving'],
+            1:['longarms']
           }
         },
 
